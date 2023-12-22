@@ -48,6 +48,15 @@ const loginController = async (req, res) => {
         message: "Invalid Credentials",
       });
     }
+//check role 
+if(user.role !== req.body.role){
+  return res.status(500).send({
+  success:false,
+  message:"role does not match" , 
+})
+}
+
+
    
     //compare password
     const comparePassword = await bcrypt.compare(
@@ -79,7 +88,32 @@ const loginController = async (req, res) => {
   }
 };
 
+//GET CURRENT USER
+
+const currentUserController = async(req,res) => {
+
+try{
+
+const user = await userModel.findOne({_id:req.body.userId});
+return res.status(200).send ({
+  success:true,
+  message:"User Fetched Successfully" ,
+  user,
+});
+
+}
+
+catch(error) {
+  console.log (error);
+  return res.status(500).send({
+    success:false,
+    message:"unable to get current user",
+    error
+  });
+}
+};
+
 
   
 
-module.exports = { registerController,loginController };
+module.exports = { registerController,loginController, currentUserController };
