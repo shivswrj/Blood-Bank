@@ -18,6 +18,7 @@ app.use(express.json())
 app.use(morgan("dev")) // will give info about the url , time it takes on console
 
 app.use("/api/v1/test" , require("./routes/testRoutes"));
+app.use("/api/v1/auth" , require("./routes/authRoutes"));
 
 
 
