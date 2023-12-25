@@ -19,7 +19,7 @@ app.use(morgan("dev")) // will give info about the url , time it takes on consol
 
 app.use("/api/v1/test" , require("./routes/testRoutes"));
 app.use("/api/v1/auth" , require("./routes/authRoutes"));
-
+app.use("/api/v1/inventory",require("./routes/inventoryRoutes"));
 
 
 //port
@@ -28,5 +28,5 @@ const PORT = process.env.PORT || 8080;
 //listen
 
 app.listen(PORT , () => {
-    console.log(`Node Server Running In ${process.env.DEV_MODE} On Port ${process.env.PORT}`);
+    console.log(`Node Server Running In ${process.env.DEV_MODE} Mode On Port ${process.env.PORT}`);
 });

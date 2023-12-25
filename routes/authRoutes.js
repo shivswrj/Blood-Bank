@@ -1,20 +1,16 @@
 const express = require("express");
-const { 
-    registerController, loginController } = require("../controllers/authController");
+const { registerController, loginController , currentUserController } = require("../controllers/authController");
 const authMiddleware = require("../middlewares/authMiddleware");
 
-
-
 const router = express.Router();
-//routes
-//Register || post
+
+//Register || post request
 router.post("/register", registerController);
-//login || post
-router.post("/register", loginController);
+//login || post requet
+router.post("/login", loginController);
 
-//GET CURRENT USER || GET 
-
-router.get('/current-user',authMiddleware, currentUserController);
+//GET CURRENT USER || GET
+router.get("/current-user",authMiddleware, currentUserController); //authmiddleware is used to protect routes
 
 
 

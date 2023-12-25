@@ -1,87 +1,70 @@
+const inventorymodel = require("../models/inventoryModel");
+const usermodel = require("../models/userModel");
 
-
-const inventoryModel = require("../models/inventoryModel");
-const userModel = require("../models/userModel");
-
-
-//create inventory
-
-const  createInventoryController = async( req,res) => {
-
+const addInventoryController = async (req,res)=>{
     try{
-        const{ email , inventoryType} = req.body;
-
-//validation
-
-const user = await userModel.findOne({email});
-    if(!user){
-    throw new Error("user not found");
-}
-
-if(inventoryType === "in" && user.role !=="donar"){
-     throw new Error("not  a donar account");
-
-}
-     if(inventoryType === "out" && user.role != "hospital"){
-        return throw new Error("not a hospital");
-     }
-
-     //save record 
-     const inventory = new inventoryModel (req.body);
-     await inventory.save();
-     return res.status(201).send({
-     success:true,
-     message:"new blood record added",
-
-     });
-    
-
-    }
-
-      catch (error)
-    {
-        console.log(error)
-        return res.status(500).send({
-        success:false,
-        message:"Error In Create Inventory API" ,
-        error
-
+        const {email , inventorytype } = req.body;
+        const currentuser = await usermodel.findOne({email:email});
+        //checking errors
+        if(!currentuser){
+            return res.status(400).send({
+                success:false,
+                message:"User not found",
+                error
+            })
+        }
+        if(inventorytype ==="in" && usermodel.role !="donar"){
+            return res.status(400).send({
+                success:false,
+                message:"Not a donar account",
+                error
+            })   
+        }
+        if(inventorytype === "out" && usermodel.role !="hospital"){
+            return res.status(400).send({// status code 400 means cannot find the request ( doesn't indicates whether the absense if temporary or permanaet) and error occured by user
+                success:false,
+                message:"Not an hospital account",
+                error
+            })
+        }
+        //saving inventory data to database
+        const inventory = new inventorymodel(req.body);
+        await inventory.save();
+        return res.status(201).send({ // status code 201 means successful requests that create a new resource on the server
+            success:true,
+            message:"Inventory added successfully",
         })
-    }
-};
-
-//get all blood records
-
-const getInventoryController = async ( req,res) => {
-    try{
-          const inventory = await inventoryModel.find({ 
-            organisation: req.body.userId,
-        })
-        .populate("donar")
-        .populate("hospital")
-        .sort( {createdAt: -1});
-
-         return res.status(200).send({
-            success: true,
-            message:"get all records successfully",
-            inventory,
-
-
-         });
     }
     catch(error){
-        console.log(error)
-        return res.status(500).send({
-        success:false,
-        message:"error in get all inventory",
-        error
-
+        console.log(error);
+        return res.status(400).send({
+            success:false,
+            message:"Adding Inventory was not successfull",
+            error
         })
     }
+};
 
-
+const getInventoryController = async (req,res)=>{
+    try{
+        const inventory = await inventorymodel.find({organisation : "6588764e18a66ba24f82489f"});
+        return res.status(201).send({ // status code 201 means successful requests that create a new resource on the server
+            success:true,
+            message:"Inventory Fetched successfully",
+            id:req.body.userId,
+            inventory
+        })
+    }
+    catch(error){
+        console.log(error);
+        return res.status(400).send({// status code 400 means cannot find the request ( doesn't indicates whether the absense if temporary or permanaet) and error occured by user
+            success:false,
+            message:"Fetching Inventory was not successfull",
+            error
+        })
+    }
 
 };
 
 
-module.exports = {createInventoryController ,getInventoryController};
+module.exports = {addInventoryController , getInventoryController};
