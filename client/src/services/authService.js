@@ -13,7 +13,7 @@ export const handleLogin = (e, email, password, role) => {
   }
 };
 
-export const handleRegister = (
+export const handleSignup = (
   e,
   name,
   role,
