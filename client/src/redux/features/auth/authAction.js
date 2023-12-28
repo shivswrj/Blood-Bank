@@ -12,7 +12,7 @@ export const userLogin = createAsyncThunk(
         alert(data.message);
         localStorage.setItem("token", data.token);
         toast.success(data.message)
-        
+        window.location.replace("/");
        
       }
       return data;
@@ -20,6 +20,86 @@ export const userLogin = createAsyncThunk(
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);
       } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
+
+
+//register
+
+export const userRegister = createAsyncThunk(
+  'auth/register' ,
+  async({ name,
+    role,
+    email,
+    password,
+    phone,
+    organisationName,
+    address,
+    hospitalName,
+    website}) => {
+
+      try {
+
+const {data} = await API.post('/auth/register',{name,
+  role,
+  email,
+  password,
+  phone,
+  organisationName,
+  address,
+  hospitalName,
+  website});
+
+
+  if(data?.success)
+  {
+    alert("user registered successfully");
+    toast.success("user registered successfully");
+    window.location.replace('login');
+      }
+      }
+      catch (error){
+        console.log(error);
+          if(error.response && error.response.data.message){
+            return rejectWithValue(error.response.data.message);
+
+          }
+          else{
+            return rejectWithValue(error.message);
+          }
+        }
+      }
+
+
+      
+    
+);
+
+//current user
+
+export const getCurrentUser = create createAsyncThunk(
+  'auth/getCurrentUser' ,
+  async ({rejectWithValue})=>{
+    try{
+
+      const res= await API.get('/auth/current-user')
+      if(res?.data){
+        return res?.data;
+      }
+    }
+
+    catch(error)
+    {
+      console.log(error);
+      if(error.response && error.response.data.message){
+        return rejectWithValue(error.response.data.message);
+
+      }
+      else{
         return rejectWithValue(error.message);
       }
     }
