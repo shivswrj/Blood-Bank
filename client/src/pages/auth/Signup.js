@@ -1,12 +1,20 @@
 import React from 'react' //rafce
 import Form from '../../components/shared/Form/Form'
-
-const signup = () => {
+import { useSelector } from 'react-redux'
+import Spinner from '../../components/shared/Spinner'
+import { toast } from 'react-toastify'
+const Signup = () => {
+  const {loading,error} = useSelector(state => state.auth)
   return (
-    <div>
-        <Form formtype={"signup"} formtitle={"Singup Form"} Submitbtn={"signup"} />
-    </div>
+    <>
+      {error && <span>{toast(error)}</span>}
+      {loading?<Spinner/> : (
+        <div>
+          <Form formtype={"signup"} formtitle={"Singup Form"} Submitbtn={"signup"} />
+        </div>    
+      )}
+    </>
   )
 }
 
-export default signup
+export default Signup

@@ -5,7 +5,7 @@ const authMiddleware = require("../middlewares/authMiddleware");
 const router = express.Router();
 
 //Register || post request
-router.post("/register", registerController);
+router.post("/signup", registerController);
 //login || post requet
 router.post("/login", loginController);
 

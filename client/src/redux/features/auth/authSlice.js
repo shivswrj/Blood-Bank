@@ -1,14 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getCurrentUser, userLogin, userRegister } from "./authAction";
+import { getCurrentUser, userLogin, userSignup } from "./authAction";
 
-
-
+const token = () => {
+  if(localStorage.getItem("token")){
+   return localStorage.getItem("token") 
+  }
+  else{
+    return null;
+  }
+}
 const initialState = {
   loading: false,
   user: null,
-  token:null,
+  token: token,
   error: null,
 };
+
 const authSlice = createSlice({
     name: "auth",
     initialState: initialState,
@@ -31,17 +38,17 @@ const authSlice = createSlice({
       });
 
 
-      // register user
-      builder.addCase(userRegister.pending, (state) => {
+      // Signup user
+      builder.addCase(userSignup.pending, (state) => {
         state.loading = true;
         state.error = null;
       });
-      builder.addCase(userRegister.fulfilled, (state, { payload }) => {
+      builder.addCase(userSignup.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.user = payload.user;
         
       });
-      builder.addCase(userRegister.rejected, (state, { payload }) => {
+      builder.addCase(userSignup.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
       });

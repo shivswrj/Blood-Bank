@@ -17,13 +17,14 @@ const Form = ({formtype , Submitbtn , formtitle}) => {
     <div>
         <h1>{formtitle}</h1><br/><br/>
         <form onSubmit={(e)=>{
+            
             if(formtype==="login"){
-                return (handleLogin(e,email,password));
+                return (handleLogin(e,email,password,role));
             }
             else if(formtype==="signup"){
                 return (handleSignup (e,email,password,role,name,organisationName,hospitalName,website,address,phone)); 
-            }
-        }}> 
+            }}}> 
+
             <input type="radio" name="role" id="donar-role" value={"admin"} onChange={(e)=>setRole(e.target.value)} />
             <label htmlFor="donar-role">Admin</label>
             

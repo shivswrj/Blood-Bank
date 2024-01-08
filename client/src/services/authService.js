@@ -1,5 +1,5 @@
-import { userRegister } from "../redux/features/auth/authAction";
-import { userLogin } from "../redux/features/auth/authActions";
+import { userSignup } from "../redux/features/auth/authAction";
+import { userLogin } from "../redux/features/auth/authAction";
 import store from "../redux/store";
 
 export const handleLogin = (e, email, password, role) => {
@@ -14,34 +14,10 @@ export const handleLogin = (e, email, password, role) => {
   }
 };
 
-export const handleRegister = (
-  e,
-  name,
-  role,
-  email,
-  password,
-  phone,
-  organisationName,
-  address,
-  hospitalName,
-  website
-) => {
+export const handleSignup = (e,email,password,role,name,organisationName,hospitalName,website,address,phone) => {
   e.preventDefault();
   try {
-    store.dispatch(userRegister(
-      {name,
-      role,
-      email,
-      password,
-      phone,
-      organisationName,
-      address,
-      hospitalName,
-      website
-  }
-  );
-      
-    );
+    store.dispatch(userSignup({ email,password,role,name,organisationName,hospitalName,website,address,phone}));
   } catch (error) {
     console.log(error);
   }
