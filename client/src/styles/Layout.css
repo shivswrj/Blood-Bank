@@ -1,9 +1,9 @@
 .sidebar {
     height: 100vh !important;
-  width: 50vh;
-    background-color: #2e3200;
-    box-shadow: 0 0 2px gray;
-    color: white;
+  width: 45vh;
+    background-color: rgb(255, 6, 6);
+    box-shadow: 0 0 2px rgb(243, 23, 7);
+    color: grey;
   }
   
   .menu {
@@ -15,7 +15,7 @@
   }
   
   .menu-item a {
-    color: white;
+    color: whitesmoke;
     text-decoration: none;
     font-size: 1.2rem;
   }
@@ -27,7 +27,7 @@
   }
   
   .active {
-    background-color: white;
+    background-color:white;
     padding: 10px;
     margin-top: 25px;
   }
@@ -36,3 +36,4 @@
   .active i {
     color: #2e3200;
   }
+  

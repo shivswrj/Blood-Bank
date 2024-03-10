@@ -32,7 +32,7 @@ export const userSignup = createAsyncThunk('auth/signup' ,
         const {data} = await API.post('/auth/signup',{name, role, email, password, phone, organisationName, address, hospitalName, website});
         if(data?.success)
         {
-          window.location.replace('login');
+          window.location.replace('/login');
           alert("user registered successfully");
         }
       }catch (error){

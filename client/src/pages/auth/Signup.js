@@ -9,9 +9,14 @@ const Signup = () => {
     <>
       {error && <span>{toast(error)}</span>}
       {loading?<Spinner/> : (
-        <div>
-          <Form formtype={"signup"} formtitle={"Singup Form"} Submitbtn={"signup"} />
-        </div>    
+        <div className="row g-0">
+        <div className="col-md-8 form-banner ">
+          <img src="./assets/images/banner2.png" alt="registerImage" />
+        </div>
+        < div className="col-md-4 form-container">
+          <Form formtype={"signup"} formtitle={"Singup Form"} Submitbtn={"Signup"} />
+        </div>  
+        </div>  
       )}
     </>
   )

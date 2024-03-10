@@ -13,12 +13,12 @@ const addInventoryController = async (req,res)=>{
                 error
             })
         }
-        if(inventorytype ==="in" && usermodel.role !="donar"){
-            return res.status(400).send({
-                success:false,
+       if(inventorytype ==="in" && usermodel.role !="donar"){
+           return res.status(400).send({
+               success:false,
                 message:"Not a donar account",
                 error
-            })   
+           })   
         }
         if(inventorytype === "out" && usermodel.role !="hospital"){
             return res.status(400).send({// status code 400 means cannot find the request ( doesn't indicates whether the absense if temporary or permanaet) and error occured by user
@@ -27,6 +27,7 @@ const addInventoryController = async (req,res)=>{
                 error
             })
         }
+        console.log("IAM")
         //saving inventory data to database
         const inventory = new inventorymodel(req.body);
         await inventory.save();
@@ -47,7 +48,7 @@ const addInventoryController = async (req,res)=>{
 
 const getInventoryController = async (req,res)=>{
     try{
-        const inventory = await inventorymodel.find({organisation : "6588764e18a66ba24f82489f"});
+        const inventory = await inventorymodel.find({organisation : req.body.userId});
         return res.status(201).send({ // status code 201 means successful requests that create a new resource on the server
             success:true,
             message:"Inventory Fetched successfully",

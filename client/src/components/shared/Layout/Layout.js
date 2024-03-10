@@ -5,7 +5,6 @@ import Sidebar from "./Sidebar";
 const Layout = ({ children }) => {
   return (
     <>
-<<<<<<< Updated upstream
       <div className="header">
         <Header />
       </div>
@@ -15,12 +14,6 @@ const Layout = ({ children }) => {
         </div>
         <div className="col-md-9">{children}</div>
       </div>
-=======
-        <div className='header'>
-          <Header/>
-        </div>
-        <div className='content'>{children}</div>
->>>>>>> Stashed changes
     </>
   );
 };

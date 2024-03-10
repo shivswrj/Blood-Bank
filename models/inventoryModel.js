@@ -15,7 +15,7 @@ const inventorySchema = new mongoose.Schema({
         type:Number,
         require:[true,"blood quantity is require"],
     },
-    donarEmail:{
+    email:{
         type:String,
         required :[true,"Donar Email is Required"],
     },
@@ -28,16 +28,16 @@ const inventorySchema = new mongoose.Schema({
     hospital:{
         type:mongoose.Schema.Types.String,
         ref:'users',
-        required:function(){
-            return this.inventoryType === "out";
-        }
+        // required:function(){
+        //     return this.inventoryType === "out";
+        // }
     },
     donar:{
         type: mongoose.Schema.Types.String,
         ref:"users",
-       // required: function () {
-       //     return this.inventoryType === "in";
-       // },
+    //    required: function () {
+    //        return this.inventoryType === "in";
+    //    },
     },
 }, { timestamps : true});
 
