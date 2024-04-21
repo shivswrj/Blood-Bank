@@ -4,7 +4,7 @@ import InputType from "./../Form/InputType";
 import API from "./../../../services/API";
 
 const Modal = () => {
-  const [inventoryType, setInventoryType] = useState("in");
+  const [inventoryType, setInventoryType] = useState("");
   const [bloodGroup, setBloodGroup] = useState("");
   const [quantity, setQuantity] = useState(0);
   const [email, setEmail] = useState("");
@@ -66,9 +66,8 @@ const Modal = () => {
                   <input
                     type="radio"
                     name="inRadio"
-                    defaultChecked
                     value={"in"}
-                    onChange={(e) => setInventoryType(e.target.value_input)}
+                    onClick={() => setInventoryType("in")}
                     className="form-check-input"
                   />
                   <label htmlFor="in" className="form-check-label">
@@ -80,7 +79,7 @@ const Modal = () => {
                     type="radio"
                     name="inRadio"
                     value={"out"}
-                    onChange={(e) => setInventoryType(e.target.value_input)}
+                    onClick={() => setInventoryType("out")}
                     className="form-check-input"
                   />
                   <label htmlFor="out" className="form-check-label">
@@ -105,18 +104,42 @@ const Modal = () => {
                 <option value={"B+"}>B+</option>
                 <option value={"B-"}>B-</option>
               </select>
-              <InputType
-                text_label={"Donar Email"}
-                labelFor={"donarEmail"}
-                InputType={"email"}
-                value_input={email}
-                onchange_input={(e) => setEmail(e.target.value)}
-              />
+              {
+                (()=>{
+                  if(inventoryType === "in"){
+                    return(
+                      <>
+                        <InputType
+                        text_label={"Donar Email"}
+                        labelFor={"donarEmail"}
+                        InputType={"email"}
+                        value={email}
+                        onchange_input={(e) => setEmail(e.target.value)}
+                        />    
+                      </>
+                    );
+                  }
+                  else{
+                    return(
+                      <>
+                        <InputType
+                        text_label={"Hospital Email"}
+                        labelFor={"HospitalEmail"}
+                        InputType={"email"}
+                        value={email}
+                        onchange_input={(e) => setEmail(e.target.value)}
+                        />    
+                      </>
+                    );
+                  }
+
+                })()
+              }
               <InputType
                 text_label={"Quanitity (ML)"}
                 labelFor={"quantity"}
                 InputType={"Number"}
-                value_input={quantity}
+                value={quantity}
                 onchange_input={(e) => setQuantity(e.target.value)}
               />
             </div>
