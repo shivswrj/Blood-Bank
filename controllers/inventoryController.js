@@ -1,6 +1,6 @@
 const inventorymodel = require("../models/inventoryModel");
 const usermodel = require("../models/userModel");
-
+const mongoose = require('mongoose')
 const addInventoryController = async (req,res)=>{
     try{
         const email = req.body.email ;
@@ -101,28 +101,84 @@ const getInventoryController = async (req,res)=>{
 
 };
 
+
 const getShowHospital = async (req,res)=>{
-    try{
-        const inventory = await inventorymodel.find({organisation : req.body.userId});
-        return res.status(201).send({ // status code 201 means successful requests that create a new resource on the server
-            success:true,
-            message:"Inventory Fetched successfully",
-            id:req.body.userId,
-            inventory
-        })
-    }
-    catch(error){
+    try {
+        const bloodGroups = ["O+", "O-", "AB+", "AB-", "A+", "A-", "B+", "B-"];
+        const bloodGroupData = [];
+        const organisation = new mongoose.Types.ObjectId(req.body.userId);
+        const org_name = (await usermodel.find({ '_id': organisation.toString() }))[0].organisationName;
+        console.log(org_name);
+        //get single blood group
+        await Promise.all(
+            bloodGroups.map(async (bloodGroup) => {
+                //COunt TOTAL IN
+                const totalIn = await inventorymodel.aggregate([
+                    {
+                    $match: {
+                        bloodGroup: bloodGroup,
+                        inventoryType: "in",
+                        organisation: organisation.toString(),
+                    },
+                    },
+                    {
+                    $group: {
+                        _id: null,
+                        total: { $sum: "$quantity" },
+                    },
+                    },
+                ]);
+                //COunt TOTAL OUT
+                const totalOut = await inventorymodel.aggregate([
+                    {
+                    $match: {
+                        bloodGroup: bloodGroup,
+                        inventoryType: "out",
+                        organisation: organisation.toString(),
+                    },
+                    },
+                    {
+                    $group: {
+                        _id: null,
+                        total: { $sum: "$quantity" },
+                    },
+                    },
+                ]);
+                //CALCULATE TOTAL
+                const availabeBlood =
+                    (totalIn[0]?.total || 0) - (totalOut[0]?.total || 0);
+        
+                //PUSH DATA
+                bloodGroupData.push({
+                    bloodGroup,
+                    totalIn: totalIn[0]?.total || 0,
+                    totalOut: totalOut[0]?.total || 0,
+                    availabeBlood,
+                    org_name
+                    
+                });
+
+                
+                })
+                
+        );
+        
+        console.log(bloodGroupData);
+        return res.status(200).send({
+          success: true,
+          message: "Blood Group Data Fetch Successfully",
+          bloodGroupData,
+        });
+      } catch (error) {
         console.log(error);
-        return res.status(400).send({// status code 400 means cannot find the request ( doesn't indicates whether the absense if temporary or permanaet) and error occured by user
-            success:false,
-            message:"Fetching Inventory was not successfull",
-            error
-        })
-    }
-
-
-
+        return res.status(500).send({
+          success: false,
+          message: "Error In Bloodgroup Data",
+          error,
+        });
+      }
 };
+
 
   
     
