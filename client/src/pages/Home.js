@@ -25,6 +25,19 @@ const HomePage = () => {
     }
   };
 
+  //get function
+  const ShowHospital = async () => {
+    try {
+      const { data1 } = await API.get("/ShowHospital");
+      if (data1?.success) {
+        setData(data1?.inventory);
+        // console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getBloodRecords();
   }, []);
@@ -36,7 +49,8 @@ const HomePage = () => {
         <Spinner />
       ) : (
         <>
-          <div className="container">
+          {user?.role === "organisation" && (
+            <div className="container">
             <h4
               className="ms-4"
               data-bs-toggle="modal"
@@ -73,6 +87,46 @@ const HomePage = () => {
 
             <Modal />
           </div>
+          )}
+
+          {user?.role === "hospital" && (
+            <div className="container">
+            <h4
+              className="ms-4"
+              data-bs-toggle="modal"
+              data-bs-target="#staticBackdrop"
+              style={{ cursor: "pointer" }}
+            >
+              Add Inventory
+            </h4>
+            <table className="table ">
+              <thead>
+                <tr>
+                  <th scope="col">Blood Group</th>
+                  <th scope="col">Inventory Type</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Donar Email</th>
+                  <th scope="col">TIme & Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data?.map((record) => (
+                  <tr key={record._id}>
+                    <td>{record.bloodGroup}</td>
+                    <td>{record.inventoryType}</td>
+                    <td>{record.quantity} (ML)</td>
+                    <td>{record.email}</td>
+                    <td>
+                      {moment(record.createdAt).format("DD/MM/YYYY hh:mm A")}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <Modal />
+          </div>
+          )}  
         </>
       )}
     </Layout>

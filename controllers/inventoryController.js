@@ -80,6 +80,29 @@ const addInventoryController = async (req,res)=>{
 
 const getInventoryController = async (req,res)=>{
     try{
+        const inventory = await inventorymodel.find({organisation: req.body.userId});
+        return res.status(201).send({ // status code 201 means successful requests that create a new resource on the server
+            success:true,
+            message:"Inventory Fetched successfully",
+            id:req.body.userId,
+            inventory
+        })
+    }
+    catch(error){
+        console.log(error);
+        return res.status(400).send({// status code 400 means cannot find the request ( doesn't indicates whether the absense if temporary or permanaet) and error occured by user
+            success:false,
+            message:"Fetching Inventory was not successfull",
+            error
+        })
+    }
+
+
+
+};
+
+const getShowHospital = async (req,res)=>{
+    try{
         const inventory = await inventorymodel.find({organisation : req.body.userId});
         return res.status(201).send({ // status code 201 means successful requests that create a new resource on the server
             success:true,
@@ -97,8 +120,12 @@ const getInventoryController = async (req,res)=>{
         })
     }
 
+
+
 };
 
+  
+    
 //GET DONAR RECORDS
 const getDonarsController = async (req, res) => {
     try {
@@ -129,4 +156,4 @@ const getDonarsController = async (req, res) => {
   
 
 
-module.exports = {addInventoryController , getInventoryController,getDonarsController};
+module.exports = {addInventoryController , getInventoryController,getDonarsController,getShowHospital};
